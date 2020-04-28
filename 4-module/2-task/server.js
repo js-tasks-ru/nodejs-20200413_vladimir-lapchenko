@@ -22,10 +22,10 @@ server.on("request", (req, res) => {
       const file = fs.createWriteStream(filepath, { flags: "wx" });
 
       limitSizeStream.on("error", (error) => {
-        console.log(error.message);
         res.statusCode = 413;
-        res.end();
+        res.end(error.message);
         file.end();
+        fs.unlinkSync(filepath);
       });
 
       file.on("error", (error) => {
@@ -35,7 +35,6 @@ server.on("request", (req, res) => {
 
       file.on("finish", () => {
         if (res.finished) return;
-        console.log("file finished");
         res.statusCode = 201;
         res.end();
       });
