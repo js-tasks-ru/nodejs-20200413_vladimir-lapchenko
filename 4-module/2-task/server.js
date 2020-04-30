@@ -12,7 +12,6 @@ server.on("request", (req, res) => {
 
   switch (req.method) {
     case "POST": {
-      console.log(req.headers['content-length'])
       if (pathname.includes("/") || pathname.includes("..")) {
         res.statusCode = 400;
         res.end();
