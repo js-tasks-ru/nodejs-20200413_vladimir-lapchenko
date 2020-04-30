@@ -12,8 +12,14 @@ server.on("request", (req, res) => {
 
   switch (req.method) {
     case "POST": {
+      console.log(req.headers['content-length'])
       if (pathname.includes("/") || pathname.includes("..")) {
         res.statusCode = 400;
+        res.end();
+        return;
+      }
+      if (req.headers['content-length'] <= 0) {
+        res.statusCode = 409;
         res.end();
         return;
       }
@@ -28,7 +34,7 @@ server.on("request", (req, res) => {
         fs.unlinkSync(filepath);
       });
 
-      file.on("error", (error) => {
+      file.on("error", () => {
         res.statusCode = 409;
         res.end();
       });
