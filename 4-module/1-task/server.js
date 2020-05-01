@@ -35,7 +35,7 @@ server.on("request", (req, res) => {
           return;
         }
 
-        const file = new fs.ReadStream(filepath);
+        const file = new fs.createReadStream(filepath);
         file.pipe(res);
 
         res.on("close", () => {
