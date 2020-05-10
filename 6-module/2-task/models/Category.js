@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const connection = require('../libs/connection');
+const mongoose = require("mongoose");
+const connection = require("../libs/connection");
 
 const subCategorySchema = new mongoose.Schema({
   title: {
@@ -17,4 +17,16 @@ const categorySchema = new mongoose.Schema({
   subcategories: [subCategorySchema],
 });
 
-module.exports = connection.model('Category', categorySchema);
+categorySchema.methods.map = function () {
+  const subcategories = this.subcategories.map((s) => ({
+    id: s.id,
+    title: s.title,
+  }));
+  return {
+    id: this.id,
+    title: this.title,
+    subcategories,
+  };
+};
+
+module.exports = connection.model("Category", categorySchema);
